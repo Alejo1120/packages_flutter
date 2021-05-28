@@ -41,5 +41,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSContactsUsageDescription</key>  
+	<string>Your description of why you are requesting permissions.</string>
 </dict>
 </plist>
