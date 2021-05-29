@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ghost12/data/request/create_chat_request.dart';
 import 'package:ghost12/domain/exeptions/auth_exeption.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,7 +47,7 @@ class ChatService {
     throw AuthExeption();
   }
 
-  Future<ChatResponse> createChat(ChatRequest chat, String token) async {
+  Future<ChatResponse> createChat(CreateChatResquest chat, String token) async {
     late ChatResponse usersResponse;
     var url = Uri.parse('$urlApi/');
     var headers = {

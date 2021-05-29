@@ -9,7 +9,7 @@ import 'package:ghost12/ux/contact/contact_block.dart';
 import 'package:ghost12/ux/screens.dart';
 import 'package:provider/provider.dart';
 
-class ContactScreen extends StatelessWidget {
+class ContactScreen extends StatefulWidget {
   ContactScreen._();
 
   static Widget init(BuildContext context) {
@@ -24,6 +24,11 @@ class ContactScreen extends StatelessWidget {
     );
   }
 
+  @override
+  _ContactScreenState createState() => _ContactScreenState();
+}
+
+class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     final block = context.watch<ContactBlock>();
@@ -90,7 +95,7 @@ class ContactScreen extends StatelessWidget {
                               height: 56.0,
                             ),
                           ),
-                          //Text(dataBlock.contacts[index].name),
+                          Text(block.contacts[index].name),
                         ],
                       ),
                     ),

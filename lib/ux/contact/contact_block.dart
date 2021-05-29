@@ -32,6 +32,7 @@ class ContactBlock extends ChangeNotifier {
       contact.phones.forEach((element) async {
         if (index == 0 && element.value != null) {
           var numeroSplit = element.value!.split(" ").join("");
+
           if (numeroSplit[0] == "+" && numeroSplit[0] == "*") {
             var n = "";
             for (int i = 3; i < numeroSplit.length; i++) {
@@ -41,27 +42,27 @@ class ContactBlock extends ChangeNotifier {
             numeroSplit = n;
             print(numeroSplit);
           }
+
           final phone = await localStorageRepository.getPhone();
           if (phone != null && phone != 0) {
             if (numeroSplit.length == 10) {
-              if (numeroSplit == phone.toString()) {
-                print("iguallllllllllllll");
-              } else {
-                print(numeroSplit + '====' + phone.toString());
-                ContactResponse contactRequestInterface = ContactResponse(
-                    name: (contact.displayName != null)
-                        ? contact.displayName!
-                        : (contact.givenName != null)
-                            ? contact.givenName!
-                            : numeroSplit,
-                    phone: int.parse(numeroSplit));
-                listContact.add(contactRequestInterface);
-                listContact.remove(phone);
-                print('encontro');
-              }
+              print("igual");
+              print(numeroSplit + '====' + phone.toString());
+              ContactResponse contactRequestInterface = ContactResponse(
+                  name: (contact.displayName != null)
+                      ? contact.displayName!
+                      : (contact.givenName != null)
+                          ? contact.givenName!
+                          : numeroSplit,
+                  phone: int.parse(numeroSplit));
+              listContact.add(contactRequestInterface);
+              listContact.remove(phone);
+              print('encontro');
             } else {
-              numeroSplit = "";
+              print("numero < a 10");
             }
+
+            numeroSplit = "";
           }
 
           index = 1;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghost12/data/request/chat_request.dart';
+import 'package:ghost12/data/request/create_chat_request.dart';
+import 'package:ghost12/data/request/create_message_request.dart';
 import 'package:ghost12/data/request/message_request.dart';
 import 'package:ghost12/data/response/chat_response.dart';
 import 'package:ghost12/data/response/message_response.dart';
@@ -61,8 +63,16 @@ class MessageBlock extends ChangeNotifier {
     if (id != null && id != '') {
       final user = await userRepository.getUserById(id, "token");
       final userMessage = await userRepository.getUserByPhone(phone);
-      ChatRequest chatRequest =
-          ChatRequest(chatId: user.chats, type: false, users: [userMessage]);
+      CreateMessageRequest messageRequest = CreateMessageRequest(
+          remited: userMessage.id,
+          date: "12/12/1212",
+          time: "12:12",
+          message: messageController.text);
+      CreateChatResquest chatRequest = new CreateChatResquest(
+          chatsId: user.chats,
+          type: false,
+          users: [userMessage.id],
+          message: messageRequest);
       try {
         chatResponse = await chatRepository.createChat(chatRequest, "token");
         this.chat = chatResponse;

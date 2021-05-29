@@ -1,4 +1,5 @@
 import 'package:ghost12/data/request/chat_request.dart';
+import 'package:ghost12/data/request/create_chat_request.dart';
 import 'package:ghost12/data/response/chat_response.dart';
 import 'package:ghost12/data/services/chat_service.dart';
 import 'package:ghost12/domain/exeptions/auth_exeption.dart';
@@ -14,7 +15,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<ChatResponse> createChat(ChatRequest chat, String token) async {
+  Future<ChatResponse> createChat(CreateChatResquest chat, String token) async {
     ChatResponse chatResponse;
     try {
       chatResponse = await _chatService.createChat(chat, token);
