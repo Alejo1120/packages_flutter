@@ -33,19 +33,21 @@ class ContactBlock extends ChangeNotifier {
       contact.phones.forEach((element) async {
         if (index == 0 && element.value != null) {
           var numeroSplit = element.value!.split(" ").join("");
-
-          if (numeroSplit[0] == "+" && numeroSplit[0] == "*") {
+          var numeroS = numeroSplit.split("");
+          if (numeroS[0] == "+" || numeroS[0] == "*") {
             var n = "";
-            for (int i = 3; i < numeroSplit.length; i++) {
-              n = n + numeroSplit[i];
+            for (int i = 3; i < numeroS.length; i++) {
+              n = n + numeroS[i];
             }
             numeroSplit = "";
             numeroSplit = n;
+            print(n);
           }
 
           final phone = await localStorageRepository.getPhone();
           if (phone != null && phone != 0) {
-            if (numeroSplit.length == 10 && numeroSplit != _phone.toString()) {
+            if (numeroSplit.split("").length == 10 &&
+                numeroSplit != _phone.toString()) {
               if (listContact.length > 0) {
                 var verify = false;
                 for (int i = listContact.length; i == 0; i--) {
@@ -82,6 +84,18 @@ class ContactBlock extends ChangeNotifier {
         }
       });
     });
+
+    for (int i = 0; i < listContact.length; i++) {
+      if (i == listContact.length) {
+      } else {
+        for (int j = (i + 1); j < listContact.length; j++) {
+          if (listContact[i].phone == listContact[j].phone) {
+            listContact.remove(listContact[i]);
+          }
+        }
+      }
+    }
+
     try {
       if (listContact.length > 0) {
         this.contacts = [];
@@ -89,7 +103,11 @@ class ContactBlock extends ChangeNotifier {
         final contatcsResponse = await contactRepository.getContacts();
         contatcsResponse.forEach((element) {
           listContact.forEach((element1) {
+            /*  print(element.phone.toString());
+            print(element1.phone.toString()); */
             if (element.phone == element1.phone) {
+              print(element.phone.toString());
+              print(element1.phone.toString());
               this.contacts.add(element);
             }
           });
@@ -102,6 +120,14 @@ class ContactBlock extends ChangeNotifier {
                 this.contacts.remove(this.contacts[i]);
               }
             }
+          }
+        }
+
+        for (int i = 0; i < this.contacts.length; i++) {
+          print(this.contacts[i].phone);
+          print("my phone" + _phone.toString());
+          if (this.contacts[i].phone == _phone) {
+            this.contacts.remove(this.contacts[i]);
           }
         }
         notifyListeners();
