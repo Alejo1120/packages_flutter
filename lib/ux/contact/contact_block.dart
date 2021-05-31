@@ -27,6 +27,7 @@ class ContactBlock extends ChangeNotifier {
   Future<bool?> initContacts() async {
     List<ContactResponse> listContact = [];
     var index = 0;
+    final _phone = await localStorageRepository.getPhone();
     await Contacts.streamContacts().forEach((contact) async {
       index = 0;
       contact.phones.forEach((element) async {
@@ -40,27 +41,39 @@ class ContactBlock extends ChangeNotifier {
             }
             numeroSplit = "";
             numeroSplit = n;
-            print(numeroSplit);
           }
 
           final phone = await localStorageRepository.getPhone();
           if (phone != null && phone != 0) {
-            if (numeroSplit.length == 10) {
-              print("igual");
-              print(numeroSplit + '====' + phone.toString());
-              ContactResponse contactRequestInterface = ContactResponse(
-                  name: (contact.displayName != null)
-                      ? contact.displayName!
-                      : (contact.givenName != null)
-                          ? contact.givenName!
-                          : numeroSplit,
-                  phone: int.parse(numeroSplit));
-              listContact.add(contactRequestInterface);
-              listContact.remove(phone);
-              print('encontro');
-            } else {
-              print("numero < a 10");
-            }
+            if (numeroSplit.length == 10 && numeroSplit != _phone.toString()) {
+              if (listContact.length > 0) {
+                var verify = false;
+                for (int i = listContact.length; i == 0; i--) {
+                  if (numeroSplit == listContact[i].phone.toString()) {
+                    verify = true;
+                  }
+                }
+                if (!verify) {
+                  ContactResponse contactRequestInterface = ContactResponse(
+                      name: (contact.displayName != null)
+                          ? contact.displayName!
+                          : (contact.givenName != null)
+                              ? contact.givenName!
+                              : numeroSplit,
+                      phone: int.parse(numeroSplit));
+                  listContact.add(contactRequestInterface);
+                }
+              } else {
+                ContactResponse contactRequestInterface = ContactResponse(
+                    name: (contact.displayName != null)
+                        ? contact.displayName!
+                        : (contact.givenName != null)
+                            ? contact.givenName!
+                            : numeroSplit,
+                    phone: int.parse(numeroSplit));
+                listContact.add(contactRequestInterface);
+              }
+            } else {}
 
             numeroSplit = "";
           }
@@ -72,15 +85,25 @@ class ContactBlock extends ChangeNotifier {
     try {
       if (listContact.length > 0) {
         this.contacts = [];
+
         final contatcsResponse = await contactRepository.getContacts();
         contatcsResponse.forEach((element) {
           listContact.forEach((element1) {
             if (element.phone == element1.phone) {
-              print("telefono add" + element.toString());
               this.contacts.add(element);
             }
           });
         });
+        for (int i = 0; i < this.contacts.length; i++) {
+          if (i == this.contacts.length) {
+          } else {
+            for (int j = (i + 1); j < this.contacts.length; j++) {
+              if (this.contacts[i].phone == this.contacts[j].phone) {
+                this.contacts.remove(this.contacts[i]);
+              }
+            }
+          }
+        }
         notifyListeners();
       } else {
         this.contacts = [];

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ghost12/data/request/chat_request.dart';
 import 'package:ghost12/data/request/create_chat_request.dart';
 import 'package:ghost12/data/request/create_message_request.dart';
 import 'package:ghost12/data/request/message_request.dart';

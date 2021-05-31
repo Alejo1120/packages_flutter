@@ -257,9 +257,11 @@ class _MessageScreenState extends State<MessageScreen> {
                                     onPressed: () {
                                       if (block.messageController.text.length >
                                           0) {
-                                        block.addMessage();
-                                      } else {
-                                        block.createChat();
+                                        if (block.chat.messages.length > 0) {
+                                          block.addMessage();
+                                        } else {
+                                          block.createChat();
+                                        }
                                       }
                                     },
                                   ),
